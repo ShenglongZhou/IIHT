@@ -1,9 +1,9 @@
 function out = IIHT(n,s, func, pars)
 % A solver for sparsity constraints models:
-% Compressed Sensing (CS):
+%
 %                    min f(x),  s.t. ||x||_0<=s,
 %
-%  where f: R^n->R, s<<n
+%  where f: R^n->R and s<<n.
 %
 % Written by 16/01/2016, Shenglong Zhou
 %
