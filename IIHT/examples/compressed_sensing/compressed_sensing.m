@@ -1,4 +1,6 @@
-function [out1,out2] = compressed_sensing(x,data)    Tx  = find(x);
+function [out1,out2] = compressed_sensing(x,data)    
+
+     x  = find(x);
 
     if ~isempty(Tx)   
     Axb  = data.A(:,Tx)*x(Tx)-data.b;
