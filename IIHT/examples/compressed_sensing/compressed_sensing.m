@@ -1,5 +1,5 @@
 function [out1,out2] = compressed_sensing(x,data)    
-% data is astructure containing 
+% data is a structure containing 
 %    (data.A data.At data.b) 
 % where data.At = data.A'
   
