@@ -24,7 +24,7 @@ end
 fun      = str2func('LCPfunc');
 func     = @(x)fun(x,data);  
 pars.tol = 1e-6*sqrt(n);
-out      = IIHTnew(n,s,func,pars); 
+out      = IIHT(n,s,func,pars); 
 
 fprintf('\n Sample size:       n = %d\n',n);
 fprintf(' Recovery time:    %6.3fsec\n',  out.time);
