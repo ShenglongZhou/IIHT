@@ -12,7 +12,7 @@ data     = @(var,flag)simple_ex4_func(var,flag);
 
 fun      = str2func('general_example');
 func     = @(x)fun(x,data);  
-out      = IIHTnew(n,s,func); 
+out      = IIHT(n,s,func); 
 fprintf('\nVariable size:    n = %d\n', n);
 fprintf('CPU time:         %.3fsec\n',  out.time);
 fprintf('Objective value:  %5.2e\n\n', out.obj);
