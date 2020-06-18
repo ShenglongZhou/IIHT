@@ -1,4 +1,4 @@
-% demon compressed sensing problems with randomly generated data
+% demon compressed sensing problems 
 clc; clear; close all;
 
 n       = 10000;  
