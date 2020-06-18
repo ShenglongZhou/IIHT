@@ -34,7 +34,7 @@ end
 fun      = str2func('compressed_sensing');
 func     = @(x)fun(x,data);  
 pars.tol = 1e-6*sqrt(n);
-out      = IIHTnew(n,s,func,pars); 
+out      = IIHT(n,s,func,pars); 
 
 fprintf('\n Sample size:       %dx%d\n', m,n);
 fprintf(' Recovery time:     %.3fsec\n',  out.time);
