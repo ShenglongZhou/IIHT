@@ -1,4 +1,4 @@
-% demon sparse logistic regression problems with randomly generated data
+% demon sparse logistic regression problems 
 clc; clear; close all;
 
 n    = 10000;  
