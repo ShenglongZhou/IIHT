@@ -1,17 +1,17 @@
 clc; clear; close all;
 
-ExNam   = 3; %= 1, 2, 3, 4 or 5                          
-ExMat   = 3; %= 1 or 2
+Test    = 1; %= 1, 2, 3, 4 or 5                          
+ExMat   = 1; %= 1 or 2
 
 n       = 1000;  
 m       = ceil(0.25*n); 
 s       = ceil(0.05*n);
-if ExNam> 3
+if Test > 3
 n       = 2; 
 s       = 1;
 end   
     
-switch ExNam
+switch Test
     
     case 1 % demon compressed sensing problems
     MatType = {'GaussianMat','PartialDCTMat'}; 
@@ -39,8 +39,10 @@ switch ExNam
     FuncNam = 'general_example'; 
 end
  
-pars.tol = 1e-7*sqrt(n);
+pars.tol = 1e-6*sqrt(n);
 fun      = str2func(FuncNam);
 func     = @(x)fun(x,data);  
-out      = IIHT(n,s,func,pars)
- 
+out      = IIHT(n,s,func,pars);
+fprintf('\n Variable size:     n = %d\n', n);
+fprintf(' Recovery time:     %.3fsec\n',  out.time);
+fprintf(' Objective value:   %5.2e\n', out.obj); 
