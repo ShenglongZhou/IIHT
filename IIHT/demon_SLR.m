@@ -31,7 +31,6 @@ switch test
        label     = load(strcat(prob,'_label.mat'));   
        label.b(label.b==-1)= 0;
        [m,n]     = size(measure.A);
-
        data.A    = normalization(measure.A,1+(m>=1e3)); 
        data.At   = data.A';
        data.b    = label.b; 
