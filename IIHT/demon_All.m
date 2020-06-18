@@ -42,7 +42,7 @@ end
 pars.tol = 1e-6*sqrt(n);
 fun      = str2func(FuncNam);
 func     = @(x)fun(x,data);  
-out      = IIHTnew(n,s,func,pars);
+out      = IIHT(n,s,func,pars);
 fprintf('\n Variable size:     n = %d\n', n);
 fprintf(' Recovery time:     %.3fsec\n',  out.time);
 fprintf(' Objective value:   %5.2e\n', out.obj); 
