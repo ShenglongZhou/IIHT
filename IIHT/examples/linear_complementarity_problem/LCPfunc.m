@@ -1,5 +1,8 @@
 function [out1,out2] = LCPfunc(x,data)
-    
+% data is a structure containing 
+%    (data.M data.Mt data.b) 
+% where data.Mt = data.M'    
+
     M   = data.M;
     Mt  = data.Mt;
     q   = data.q;
