@@ -1,4 +1,7 @@
 function [out1,out2] = logistic_regression(x,data)
+% data is a structure containing 
+%    (data.A data.At data.b) 
+% where data.At = data.A'
 
     Tx    = find(x);
     m     = length(data.b);   
