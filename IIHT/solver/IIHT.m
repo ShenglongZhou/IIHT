@@ -12,10 +12,10 @@ function out = IIHT(n,s, func, pars)
 %     n       : Dimension of the solution x, (required)
 %     func    : function handle defines the function f(x) and its gradient             
 %     pars:     Parameters are all OPTIONAL
-%               pars.iteron --  Results will  be shown for each iteration if pars.iteron=1 (default)
-%                               Results won't be shown for each iteration if pars.iteron=0 
-%               pars.maxit  --  Maximum nonumber of iteration.  pars.maxit=5000 (default) 
-%               pars.tol    --  Tolerance of stopping criteria. pars.maxit=1e-5 (default) 
+%               pars.iteron --  =1. Results will  be shown for each iteration (default)
+%                               =0. Results won't be shown for each iteration 
+%               pars.maxit  --  Maximum nonumber of iteration.  (default 5000) 
+%               pars.tol    --  Tolerance of stopping criteria. (default 1e-6sqrt(n)) 
 %
 % Outputs:
 %     out.x:             The sparse solution x 
@@ -40,7 +40,7 @@ warning off;
 if nargin<3; error('Imputs are not enough!\n'); end
 if nargin<4; pars=[]; end
 if isfield(pars,'iteron');iteron = pars.iteron; else; iteron = 1;        end
-if isfield(pars,'maxit'); maxit  = pars.maxit;  else; maxit  = 1e4;      end
+if isfield(pars,'maxit'); maxit  = pars.maxit;  else; maxit  = 5e3;      end
 if isfield(pars,'tol');   tol    = pars.tol;    else; tol = 1e-6*sqrt(n);end  
 
 t0     = tic;
@@ -55,17 +55,16 @@ fprintf('\n Iter    Error        f(x)       Time \n');
 fprintf('---------------------------------------\n');
 end
 [f,g]  = func(x);
-scale  = 0; 
-if max(f,norm(g))/n>1; scale = 1; end
+scale  = (max(f,norm(g))>n); 
 sl     = n*(scale==1)+(scale==0); 
 
-for iter=1:maxit      
+for iter=1:maxit     
+    
     x_old  = x;
     [f,g]  = func(x);
-    if scale     
-    f      = f/n;  
-    g      = g/n;     
-    end
+    f      = f/sl;  
+    g      = g/sl;     
+
     alpha  = sqrt(iter);
     
     % find a proper or the best alpha0   
@@ -75,10 +74,9 @@ for iter=1:maxit
     
     % Line search for setp size alpha
     fx_old = f;
-    fx     = func(x);
-    if scale     
-    fx     = fx/n;    
-    end
+    fx     = func(x);    
+    fx     = fx/sl;    
+   
     
     for j  = 1:10
         if (fx < fx_old-.5*sigma0*sum((x-x_old).^2)); break; end
@@ -86,17 +84,17 @@ for iter=1:maxit
         [mx,T] = maxk(x_old-alpha*g,s,'ComparisonMethod','abs');
         x      = xo; 
         x(T)   = mx;
-        fx     = func(x);
-        if scale; fx  = fx/n; end
+        fx     = func(x)/sl;
     end
 
     % Stop criteria 
 	residual = sl*norm(g(T))/max(1,norm(mx)); 
-    if iteron
+    if iteron && mod(iter,10)==0
        fprintf('%4d    %5.2e    %5.2e   %5.2fsec\n',iter,residual,fx*sl,toc(t0)); 
     end
  
 	if residual<tol || abs(fx-fx_old)<1e-10*(1+abs(fx))  
+       fprintf('%4d    %5.2e    %5.2e   %5.2fsec\n',iter,residual,fx*sl,toc(t0));
        break; 
     end  
 
@@ -113,8 +111,7 @@ out.time = toc(t0);
 out.error= residual;
 out.normg= norm(g)*sl;
 if  out.normg<1e-5 && iteron
-fprintf(' A global optimal solution might be found\n');
-fprintf(' because of ||g(x)||=%5.2e!\n',out.normg);  
+    fprintf(' A global optimal solution might be found\n');
+    fprintf(' because of ||g(x)||=%5.2e!\n',out.normg);  
 end
-
 end
