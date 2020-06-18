@@ -5,7 +5,7 @@ exmat   = 1; %= 1 or 2
 
 n       = 10000;  
 m       = ceil(0.25*n); 
-s       = ceil(0.05*n);
+s       = ceil(0.01*n);
 if test > 3
 n       = 2; 
 s       = 1;
