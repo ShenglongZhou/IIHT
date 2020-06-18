@@ -1,6 +1,9 @@
 function [out1,out2] = compressed_sensing(x,data)    
-
-     x  = find(x);
+% data is astructure containing 
+%    (data.A data.At data.b) 
+% where data.At = data.A'
+  
+    Tx  = find(x);
 
     if ~isempty(Tx)   
     Axb  = data.A(:,Tx)*x(Tx)-data.b;
@@ -8,10 +11,10 @@ function [out1,out2] = compressed_sensing(x,data)
     Axb  =  -data.b;
     end
 
-    out1 = sum(Axb.*Axb)/2;                %objective function 
+    out1 = sum(Axb.*Axb)/2; % objective function 
     
     if  nargout>1 
-    out2 = data.At*Axb;                    %gradien          
+    out2 = data.At*Axb;     % gradien          
     end
 
 end
