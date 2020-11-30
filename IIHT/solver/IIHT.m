@@ -54,47 +54,37 @@ fprintf(' Start to run the sover...\n');
 fprintf('\n Iter    Error        f(x)       Time \n'); 
 fprintf('---------------------------------------\n');
 end
-[f,g]  = func(x);
-scale  = (max(f,norm(g))>n); 
-sl     = n*(scale==1)+(scale==0); 
-
-for iter=1:maxit     
+[f,g]    = func(x);
+scale    = (max(f,norm(g))>n); 
+scal     = n*(scale==1)+(scale==0); 
+fs       = f/scal;  
+gs       = g/scal;  
+for iter = 1:maxit     
     
     x_old  = x;
-    [f,g]  = func(x);
-    f      = f/sl;  
-    g      = g/sl;     
-
-    alpha  = sqrt(iter);
-    
-    % find a proper or the best alpha0   
-    [mx,T] = maxk(x_old-alpha*g,s,'ComparisonMethod','abs');
-    x      = xo; 
-    x(T)   = mx;
-    
+      
     % Line search for setp size alpha
-    fx_old = f;
-    fx     = func(x);    
-    fx     = fx/sl;    
-   
-    
+    fx_old = fs;
+    alpha  = sqrt(iter);
     for j  = 1:10
-        if (fx < fx_old-.5*sigma0*sum((x-x_old).^2)); break; end
-        alpha  = alpha/2;
-        [mx,T] = maxk(x_old-alpha*g,s,'ComparisonMethod','abs');
+        [mx,T] = maxk(x_old-alpha*gs,s,'ComparisonMethod','abs');
         x      = xo; 
         x(T)   = mx;
-        fx     = func(x)/sl;
+        fs     = func(x)/scal;
+        if (fs < fx_old-.5*sigma0*sum((x-x_old).^2)); break; end
+        alpha  = alpha/2;        
     end
-
+    [f,g]  = func(x);
+    fs     = f/scal;  
+    gs     = g/scal;  
+    
     % Stop criteria 
-	residual = sl*norm(g(T))/max(1,norm(mx)); 
-    if iteron && mod(iter,10)==0
-       fprintf('%4d    %5.2e    %5.2e   %5.2fsec\n',iter,residual,fx*sl,toc(t0)); 
+	residual = scal*norm(gs(T))/max(1,norm(mx)); 
+    if iteron && mod(iter,1)==0
+       fprintf('%4d    %5.2e    %5.2e   %5.2fsec\n',iter,residual,fs*scal,toc(t0)); 
     end
  
-	if residual<tol || abs(fx-fx_old)<1e-10*(1+abs(fx))  
-       fprintf('%4d    %5.2e    %5.2e   %5.2fsec\n',iter,residual,fx*sl,toc(t0));
+	if residual<tol || abs(fs-fx_old)<1e-10*(1+abs(fs))  
        break; 
     end  
 
@@ -105,11 +95,11 @@ fprintf('---------------------------------------\n');
 end
 
 out.x    = x;
-out.obj  = fx*sl;
+out.obj  = fs*scal;
 out.iter = iter;
 out.time = toc(t0);
 out.error= residual;
-out.normg= norm(g)*sl;
+out.normg= norm(g)*scal;
 if  out.normg<1e-5 && iteron
     fprintf(' A global optimal solution might be found\n');
     fprintf(' because of ||g(x)||=%5.2e!\n',out.normg);  
