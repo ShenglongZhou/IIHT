@@ -3,19 +3,20 @@ function out = IIHT(n,s, func, pars)
 %
 %                    min f(x),  s.t. ||x||_0<=s,
 %
-%  where f: R^n->R and s<<n.
+% where f: R^n->R and s<<n.
 %
 % Written by 16/01/2016, Shenglong Zhou
 %
 %
 % Inputs:
-%     n       : Dimension of the solution x, (required)
+%     n       : Dimension of the solution x  (required)
+%     s       : Sparsity level of the solution x, an integer in (0,n] (required)
 %     func    : function handle defines the function f(x) and its gradient             
 %     pars:     Parameters are all OPTIONAL
 %               pars.iteron --  =1. Results will  be shown for each iteration (default)
 %                               =0. Results won't be shown for each iteration 
-%               pars.maxit  --  Maximum nonumber of iteration.  (default 5000) 
-%               pars.tol    --  Tolerance of stopping criteria. (default 1e-6sqrt(n)) 
+%               pars.maxit  --  Maximum nonumber of iteration   (default 5000) 
+%               pars.tol    --  Tolerance of stopping criteria  (default 1e-6sqrt(n)) 
 %
 % Outputs:
 %     out.x:             The sparse solution x 
@@ -31,9 +32,7 @@ function out = IIHT(n,s, func, pars)
 %  Optimization, 13(2), 325-353.
 %
 %%%%%%%    Send your comments and suggestions to                     %%%%%%
-%
-%%%%%%%    shenglong.zhou@soton.ac.uk                                %%%%%%
-% 
+%%%%%%%    shenglong.zhou@soton.ac.uk                                %%%%%% 
 %%%%%%%    Warning: Accuracy may not be guaranteed!!!!!              %%%%%%
 warning off;
 
