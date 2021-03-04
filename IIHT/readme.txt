@@ -16,9 +16,13 @@ Please give credits to this paper if you use the code for your research.
 %               
 %                out = IIHT(problem,n,s,data, pars)
 % 
-% It  aims at solving the sparsity constrained optimization with form
+% It  aims at solving the sparsity constrained optimization
 %
-%         min_{x\in R^n} f(x)  s.t.  \|x\|_0<=s
+%           min f(x),  s.t. ||x||_0<=s
+%
+% or sparsity and non-negative constrained optimization
+%
+%           min f(x),  s.t. ||x||_0<=s, x>=0,
 %
 % where s is the given sparsity, which is << n.  
 %
@@ -35,8 +39,10 @@ Please give credits to this paper if you use the code for your research.
 %     n       : Dimension of the solution x, (required)
 %     s       : Sparsity level of x, an integer between 1 and n-1, (required)                     
 %     pars:     Parameters are all OPTIONAL
-%               pars.iteron --  =1. Results will  be shown for each iteration (default)
-%                               =0. Results won't be shown for each iteration 
+%               pars.neg    --  = 0. Compute sparsity constrained model (default)
+%                               = 1. Compute sparsity and non-negative constrained model 
+%               pars.iteron --  = 1. Results will  be shown for each iteration (default)
+%                               = 0. Results won't be shown for each iteration 
 %               pars.maxit  --  Maximum nonumber of iteration   (default 5000) 
 %               pars.tol    --  Tolerance of stopping criteria  (default 1e-6sqrt(n)) 
 %
@@ -81,7 +87,8 @@ data.Mt   = data.M';
 Mx        = data.M(:,T)*x(T);
 data.q    = abs(Mx); 
 data.q(T) = -Mx(T); 
-out       = IIHT('LCP',n,s,data);
+pars.neg  = 1;
+out       = IIHT('LCP',n,s,data,pars);
 ReoveryShow(out.x,x,[900,500,500,250],1)
 
 % =================================================================
