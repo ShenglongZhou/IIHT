@@ -4,7 +4,7 @@ clc; clear; close all;
 n      = 10000;  
 m      = ceil(n/4); 
 s      = ceil(0.01*n);                      
-test   = 2;
+test   = 1;
 
 switch test
   case 1  % Input any data including (data.M, data.Mt, data.q)
@@ -21,15 +21,13 @@ switch test
        data     =  LCPdata(MatType{ExMat},n, s);
 end
 
-fun      = str2func('LCPfunc');
-func     = @(x)fun(x,data);  
+ 
 pars.tol = 1e-6*sqrt(n);
-out      = IIHT(n,s,func,pars); 
+out      = IIHT('LCP',n,s,data,pars); 
 
-fprintf('\n Sample size:       n = %d\n',n);
-fprintf(' Recovery time:    %6.3fsec\n',  out.time);
-fprintf(' Objective value:   %5.2e\n', out.obj);
-if isfield(data,'xopt')
-fprintf(' Recovery accuracy: %5.2e\n', ...
-norm(out.x-data.xopt)/norm(data.xopt));
+fprintf(' CPU time:          %.3fsec\n',  out.time);
+fprintf(' Objective:         %5.2e\n',  out.obj);
+fprintf(' Sample size:       %dx%d\n', m,n);
+if isfield(data,'xopt') && s<=100
+   ReoveryShow(data.xopt,out.x,[1000, 550, 400 200],1)
 end
