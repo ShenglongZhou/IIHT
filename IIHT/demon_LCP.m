@@ -4,7 +4,7 @@ clc; clear; close all;
 n      = 10000;  
 m      = ceil(n/4); 
 s      = ceil(0.01*n);                      
-test   = 1;
+test   = 2;
 
 switch test
   case 1  % Input any data including (data.M, data.Mt, data.q)
@@ -21,7 +21,6 @@ switch test
        data     =  LCPdata(MatType{ExMat},n, s);
 end
 
- 
 pars.neg = 1;
 out      = IIHT('LCP',n,s,data,pars); 
 
