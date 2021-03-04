@@ -1,8 +1,8 @@
-function out = IIHT(problem,n,s,data, pars)
-% A solver for sparsity constraints models:
-%
-%                    min f(x),  s.t. ||x||_0<=s,
-%
+function out = IIHT(problem,n,s,data,  pars)
+% A solver for sparsity constrained model:
+%           min f(x),  s.t. ||x||_0<=s,
+% or sparsity and non-negative constrained model:
+%           min f(x),  s.t. ||x||_0<=s, x>=0,
 % where f: R^n->R and s<<n.
 %
 % Written by 16/01/2016, Shenglong Zhou
@@ -21,8 +21,10 @@ function out = IIHT(problem,n,s,data, pars)
 %     n       : Dimension of the solution x  (required)
 %     s       : Sparsity level of the solution x, an integer in (0,n] (required)          
 %     pars:     Parameters are all OPTIONAL
-%               pars.iteron --  =1. Results will  be shown for each iteration (default)
-%                               =0. Results won't be shown for each iteration 
+%               pars.neg    --  = 0. Compute sparsity constrained model (default)
+%                               = 1. Compute sparsity and non-negative constrained model 
+%               pars.iteron --  = 1. Results will  be shown for each iteration (default)
+%                               = 0. Results won't be shown for each iteration 
 %               pars.maxit  --  Maximum nonumber of iteration   (default 5000) 
 %               pars.tol    --  Tolerance of stopping criteria  (default 1e-6sqrt(n)) 
 %
@@ -45,10 +47,11 @@ function out = IIHT(problem,n,s,data, pars)
 warning off;
 
 if nargin<4; error('Imputs are not enough!\n'); end
-if nargin<5; pars=[]; end
+if nargin<5; pars = struct([]); end
 if isfield(pars,'iteron');iteron = pars.iteron; else; iteron = 1;        end
 if isfield(pars,'maxit'); maxit  = pars.maxit;  else; maxit  = 5e3;      end
 if isfield(pars,'tol');   tol    = pars.tol;    else; tol = 1e-6*sqrt(n);end  
+if isfield(pars,'neg');   neg    = pars.neg;    else; neg = 0;           end  
 
 switch problem
     case 'CS' ;  fun  = @compressed_sensing;
@@ -67,8 +70,9 @@ xo     = zeros(n,1);
 
 % main body
 if iteron 
-fprintf(' Start to run the sover...\n'); 
-fprintf('\n Iter    Error        f(x)       Time \n'); 
+fprintf(' Start to run the sover -- IIHT \n'); 
+fprintf('---------------------------------------\n');
+fprintf(' Iter    Error        f(x)       Time \n'); 
 fprintf('---------------------------------------\n');
 end
 [f,g]    = func(x);
@@ -84,7 +88,13 @@ for iter = 1:maxit
     fx_old = fs;
     alpha  = sqrt(iter);
     for j  = 1:15
-        [mx,T] = maxk(x_old-alpha*gs,s,'ComparisonMethod','abs');
+        tp = x_old-alpha*gs;
+        if neg
+        tp = max(0, tp);   
+        [mx,T] = maxk(tp,s);
+        else
+        [mx,T] = maxk(tp,s,'ComparisonMethod','abs');    
+        end
         x      = xo; 
         x(T)   = mx;
         fs     = func(x)/scal; 
