@@ -22,7 +22,7 @@ switch test
 end
 
  
-pars.tol = 1e-6*sqrt(n);
+pars.neg = 1;
 out      = IIHT('LCP',n,s,data,pars); 
 
 fprintf(' CPU time:          %.3fsec\n',  out.time);
