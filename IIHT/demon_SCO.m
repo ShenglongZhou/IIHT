@@ -1,22 +1,25 @@
 % demon a general sparsity constrained problem
-%     min    x'*[6 5;5 8]*x+[1 9]*x-sqrt(x'*x+1)  
-%     s.t. \|x\|_0<=s
-% where s=1
-% 
+function demon_sco()
 clc; clear; close all;
 
-n    = 2;    
-s    = 1;
-% you can find this function in 'examples'-->'general_sco'
-data     = @(var,flag)simple_ex4_func(var,flag);  
+n         = 2;
+s         = 1;
+data      = @(x,fgh)simple_sco(x,fgh);  
+out       =  IIHT('SCO',n,s,data) 
 
-fun      = str2func('general_example');
-func     = @(x)fun(x,data);  
-out      = IIHT(n,s,func); 
-fprintf('\nVariable size:    n = %d\n', n);
-fprintf('CPU time:         %.3fsec\n',  out.time);
-fprintf('Objective value:  %5.2e\n\n', out.obj);
+%---------------------------------------------------------
+function data = simple_sco(x,fgH)
+    % This code provides information for
+    %     min   x'*[6 5;5 8]*x+[1 9]*x-sqrt(x'*x+1) 
+    %     s.t. \|x\|_0<=s
+    % where s=1
+    a = sqrt(sum(x.*x)+1);
+    switch fgH    
+        case 'obj'  % objective function
+        data = x'*[6 5;5 8]*x+[1 9]*x-a;        
+        case 'grad'  % gradient 
+        data = 2*[6 5;5 8]*x+[1; 9]-x./a;        
+    end   
+end
 
-
-
- 
+end
