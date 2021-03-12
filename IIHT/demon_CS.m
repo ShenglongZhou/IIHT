@@ -28,6 +28,6 @@ out      = IIHT('CS',n,s,data,pars);
 fprintf(' CPU time:          %.3fsec\n',  out.time);
 fprintf(' Objective:         %5.2e\n',  out.obj);
 fprintf(' Sample size:       %dx%d\n', m,n);
-if isfield(data,'xopt') && s<=100
-   ReoveryShow(data.xopt,out.x,[1000, 550, 400 200],1)
+if isfield(data,'x_opt') && s<=100
+   ReoveryShow(data.x_opt,out.x,[1000, 550, 400 200],1)
 end
