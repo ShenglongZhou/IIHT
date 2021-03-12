@@ -52,7 +52,7 @@ switch problemname
         disp('input a problen name');        
 end
 
-xopt     = zeros(n,1);  
+xopt     = zeros(n,1);
 while nnz(xopt)~=s  
 xopt(I)  = randn(s,1); 
 end
