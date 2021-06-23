@@ -14,7 +14,7 @@ Please give credits to this paper if you use the code for your research.
 % ===================================================================
 % The citation of the solver IIHT takes the form of
 %               
-%                out = IIHT(problem,n,s,data, pars)
+%           out = IIHT(problem,n,s,data, pars)
 % 
 % It  aims at solving the sparsity constrained optimization
 %
@@ -58,7 +58,7 @@ Please give credits to this paper if you use the code for your research.
 % Here are some examples that you can run
 % =================================================================
 % Example I:  compressed sensing problem
-
+clc; close all;
 n         = 2000; 
 m         = ceil(0.25*n);
 s         = ceil(0.01*n);     
@@ -70,11 +70,12 @@ data.A    = randn(m,n)/sqrt(n);
 data.At   = data.A';
 data.b    = data.A(:,I)*x(I);
 out       = IIHT('CS',n,s,data);
-ReoveryShow(out.x,x,[900,500,500,250],1)
+RecoverShow(x,out.x,[1000 500 500 250],1)
+
 
 % =================================================================
 % Example II:  linear complementarity problem 
-
+clc; close all;
 n         = 2000; 
 s         = ceil(0.01*n);     
 x         = zeros(n,1);
@@ -89,11 +90,12 @@ data.q    = abs(Mx);
 data.q(T) = -Mx(T); 
 pars.neg  = 1;
 out       = IIHT('LCP',n,s,data,pars);
-ReoveryShow(out.x,x,[900,500,500,250],1)
+RecoverShow(x,out.x,[1000 500 500 250],1)
+
 
 % =================================================================
 % Example III:  Logistic regression problem
-
+clc; close all;
 n         = 2000; 
 m         = ceil(0.25*n);
 s         = ceil(0.05*n);     
