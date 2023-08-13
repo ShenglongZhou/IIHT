@@ -6,8 +6,8 @@ function data = LCPdata(example,n,s )
 %       n           -- dimension  of A\in \R^{n x n}
 %       s           -- sparsity level of xopt, an intger between 1 and n-1
 % Outputs:
-%       data.A      --  n x n order measurement matrices,  (required)
-%       data.At     --  the transpose of data.A, i.e., data.At=data.A', (required)
+%       data.M      --  n x n order measurement matrices,  (required)
+%       data.Mt     --  the transpose of data.A, i.e., data.At=data.A', (required)
 %       data.b      --  n x 1 order observation vector, (required)
 %       data.xopt   --  n x 1 order 'true' sparse solution, (optional) 
 %
@@ -43,14 +43,12 @@ switch example
          [~,T]   = get_sparse_x(n,s);
          q       = rand(n,1);
          q(T)    = -rand(s,1); 
-         Mt      = M/n;
-         M       = M/n;  
-         q       = q/n;      
+         Mt      = M;       
 end
     
-data.A    = M;
-data.At   = Mt;
-data.b    = q;
+data.M    = M;
+data.Mt   = Mt;
+data.q    = q;
 data.n    = n;
 
 clear M Mt xopt Mx q Z
