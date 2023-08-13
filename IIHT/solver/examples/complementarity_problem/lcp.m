@@ -1,6 +1,6 @@
 function [out1,out2] = lcp(x,data)
 % data is a structure containing 
-%    (data.M data.Mt data.b) 
+%    (data.M data.Mt data.q) 
 % where data.Mt = data.M'    
 
     M   = data.M;
