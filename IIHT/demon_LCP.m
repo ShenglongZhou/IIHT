@@ -16,7 +16,7 @@ switch test
        q(Tx)  = -q(Tx); 
        data.M = M;  data.Mt=M; data.q=q; 
   case 2 % Input data from our data generation function
-       ExMat    = 2;
+       ExMat    = 3;
        MatType  = {'z-mat','sdp','sdp-non'};
        data     =  LCPdata(MatType{ExMat},n, s);
 end
@@ -28,5 +28,5 @@ fprintf(' CPU time:          %.3fsec\n',  out.time);
 fprintf(' Objective:         %5.2e\n',  out.obj);
 fprintf(' Sample size:       %dx%d\n', m,n);
 if  isfield(data,'xopt')
-    RecoverShow(data.xopt,out.sol,[900,500,500,250],1);
+    RecoverShow(data.xopt,out.x,[900,500,500,250],1);
 end
