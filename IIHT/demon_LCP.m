@@ -16,7 +16,7 @@ switch test
        q(Tx)  = -q(Tx); 
        data.M = M;  data.Mt=M; data.q=q; 
   case 2 % Input data from our data generation function
-       ExMat    = 3;
+       ExMat    = 2;
        MatType  = {'z-mat','sdp','sdp-non'};
        data     =  LCPdata(MatType{ExMat},n, s);
 end
